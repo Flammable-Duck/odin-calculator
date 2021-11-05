@@ -1,0 +1,52 @@
+@font-face {
+    font-family: 'E1234';
+    src:  url('fonts/E1234.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: LightSteelBlue;
+}
+
+button {
+    background-color: DarkOliveGreen;
+    border: 0px none transparent;
+    font-size: 3vh
+}
+
+.calculator {
+    background-color: LightSlateGrey;
+    height: 70vh;
+    width: 60vh;
+    padding: 1vh;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-gap: 1vh;
+}
+.calculator .display {
+    /* font-family:'E1234'; */
+    font-size: 9vh;
+    background-color:  #bdccc0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    grid-column: span 4;
+}
+
+.calculator .Operator {
+    background-color: CadetBlue;
+}
+.calculator .Number {
+    background-color: DarkSlateGray;
+}
+.calculator #Num0 {
+    grid-column: span 2;
+}
