@@ -32,7 +32,6 @@ button {
     grid-gap: 1vh;
 }
 .calculator .display {
-    /* font-family:'E1234'; */
     font-size: 9vh;
     background-color:  #bdccc0;
     display: flex;
