@@ -4,48 +4,60 @@ class Calculator {
         this.display.textContent = "0";
         this.lastValue = 0;
         this.value = 0;
+        this.answer = 0;
+        this.operator = "";
+    }
+    updateDisplay(displayText) {
+        this.display.textContent = displayText;
     }
 
-    update(result) {
-        this.value = 0
-        this.display.textContent = this.lastValue = result;
-    }
-
-    addition() {
-        this.update(this.value + this.lastValue);
-    }
-
-    subtraction() {
-        this.update(this.lastValue - this.Value);
-    }
-
-    multiplication() {
-        this.update(this.value * this.lastValue);
-    }
-
-    division() {
-        this.update(this.value / this.lastValue);
-    }
-
-    percent() {
-        this.update(this.value/100);
-    }
-
-    sign() {
-        this.update(this.value*-1);
-    }
-
-    input(input) {
-        this.value = parseInt(`${this.value}${input}`);
-        this.display.textContent = this.value;
-    }
-    equals() {
-        this.update(this.value)
+    input(inNumber) {
+        this.value = parseInt(`${this.value}${inNumber}`)
+        this.updateDisplay(this.value)
     }
 
     clear() {
+        this.lastValue = 0;
         this.value = 0;
-        this.update(0);
+        this.answer = 0;
+        this.operator = "";
+        this.updateDisplay(0)
+        console.log('Cleared.')
+    }
+
+    setOperator(operator) {
+        this.operator = operator
+        if (this.lastValue != 0) {
+            console.log(this.lastValue, "e")
+        }
+        this.lastValue = this.value
+        this.value = 0
+    }
+
+    add(){
+        console.log(`${this.value} + ${this.lastValue}`)
+        this.answer = this.value + this.lastValue;
+        this.updateDisplay(this.answer)
+    }
+    subtract(){
+        console.log(`${this.lastValue} - ${this.value}`)
+        this.answer = this.lastValue - this.value;
+        this.updateDisplay(this.answer)
+    }
+
+    calculate() {
+        switch (this.operator) {
+            case '+':
+                this.add();
+                break;
+            case '-':
+                this.subtract();
+                break;
+            default:
+                console.log(`Unknown operator: ${this.operator}`)
+        }
+        this.value = 0;
+        this.lastValue = this.answer
     }
 };
 
@@ -90,25 +102,25 @@ function attachButtons() {
                 calculator.clear()
                 break;
             case 'Percent':
-                calculator.percent()
+                calculator.setOperator('%')
                 break;
             case 'Sign':
-                calculator.sign()
+                calculator.setOperator('sign')
                 break;
             case 'Divide':
-                calculator.division()
+                calculator.setOperator('/')
                 break;
             case 'Multiply':
-                calculator.multiplication()
+                calculator.setOperator('*')
                 break;
             case 'Add':
-                calculator.addition()
+                calculator.setOperator('+')
                 break;
             case 'Subtract':
-                calculator.subtraction()
+                calculator.setOperator('-')
                 break;
             case 'Equals':
-                calculator.equals()
+                calculator.calculate()
                 break;
             default:
                 console.log(`unknown button: ${numberButton.id}`)
