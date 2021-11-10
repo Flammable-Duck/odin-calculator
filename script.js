@@ -72,7 +72,7 @@ class Calculator {
         }
     }
     clear() {
-        this.display.textContent = "";
+        this.display("")
         this.inputValue = 0.0;
         this.lastValue = 0.0;
         this.operation = "";
