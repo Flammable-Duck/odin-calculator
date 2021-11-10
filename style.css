@@ -46,6 +46,6 @@ button {
 .calculator .Number {
     background-color: DarkSlateGray;
 }
-.calculator #Num0 {
+.calculator .Number[value="0"] {
     grid-column: span 2;
 }
