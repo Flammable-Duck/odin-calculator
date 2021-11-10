@@ -1,133 +1,116 @@
-class Calculator {
-    constructor() {
-        this.display = document.querySelector(".display");
-        this.display.textContent = "0";
-        this.lastValue = 0;
-        this.value = 0;
-        this.answer = 0;
-        this.operator = "";
-    }
-    updateDisplay(displayText) {
-        this.display.textContent = displayText;
-    }
+const Display = document.querySelector('.display')
+let inputValue = 0.0
+let lastValue = 0.0
+let operation = ""
+let solution = null
+let isDecimal = false
 
-    input(inNumber) {
-        this.value = parseInt(`${this.value}${inNumber}`)
-        this.updateDisplay(this.value)
+function calculate() {
+    switch (operation){
+        case "+":
+            solution = inputValue + lastValue;
+            break;
+        case "-":
+            solution = lastValue - inputValue;
+            break;
+        case "*":
+            solution = lastValue * inputValue;
+            break;
+        case "/":
+            solution = lastValue / inputValue;
+            break;
     }
+    solution = Math.round(solution*1000000)/1000000
+}
 
-    clear() {
-        this.lastValue = 0;
-        this.value = 0;
-        this.answer = 0;
-        this.operator = "";
-        this.updateDisplay(0)
-        console.log('Cleared.')
+function equals() {
+    if (!lastValue && solution) {
+        // this allows users to input another calculation using the past result
+        lastValue = solution
     }
+    if (inputValue && lastValue && operation) {
+        calculate()
+        display(solution)
+        inputValue = ""
+        return
+    }
+}
 
-    setOperator(operator) {
-        this.operator = operator
-        if (this.lastValue != 0) {
-            console.log(this.lastValue, "e")
+function input(input) {
+    if (isDecimal == true && input != '.') {
+        isDecimal = false;
+            console.log('bar')
+        if (!inputValue) {
+            input = `0.${input}`;
+            console.log('foo')
+            console.log(input)
+        } else {
+            input = `.${input}`;
         }
-        this.lastValue = this.value
-        this.value = 0
     }
+    if (input == '.') {isDecimal = true}
+    inputValue = parseFloat(`${inputValue}${input}`)
+    display(inputValue)
+}
 
-    add(){
-        console.log(`${this.value} + ${this.lastValue}`)
-        this.answer = this.value + this.lastValue;
-        this.updateDisplay(this.answer)
-    }
-    subtract(){
-        console.log(`${this.lastValue} - ${this.value}`)
-        this.answer = this.lastValue - this.value;
-        this.updateDisplay(this.answer)
-    }
+function setOperator(operator) {
+    if (operator.value == "=") {equals(); return}
+    display(operator.value)
+    operation= operator.value
+    lastValue = inputValue
+    inputValue = ""
+    equals()
+}
 
-    calculate() {
-        switch (this.operator) {
-            case '+':
-                this.add();
-                break;
-            case '-':
-                this.subtract();
-                break;
-            default:
-                console.log(`Unknown operator: ${this.operator}`)
-        }
-        this.value = 0;
-        this.lastValue = this.answer
+function doFunctions(func) {
+    console.log(func.value)
+    switch (func.value) {
+        case 'c':
+            clear();
+            break;
+        case '%':
+            inputValue /= 100
+            display(inputValue)
+            break;
+        case 'sign':
+            inputValue *= -1
+            display(inputValue)
     }
-};
+}
 
-function attachButtons() {
-    let numbers = document.querySelectorAll('.calculator > button')
-    numbers.forEach(numberButton => numberButton.addEventListener('click', function(){
-        switch (numberButton.id) {
-            case 'Num1':
-                calculator.input(1)
-                break;
-            case 'Num2':
-                calculator.input(2)
-                break;
-            case 'Num3':
-                calculator.input(3)
-                break;
-            case 'Num4':
-                calculator.input(4)
-                break;
-            case 'Num5':
-                calculator.input(5)
-                break;
-            case 'Num6':
-                calculator.input(6)
-                break;
-            case 'Num7':
-                calculator.input(7)
-                break;
-            case 'Num8':
-                calculator.input(8)
-                break;
-            case 'Num9':
-                calculator.input(9)
-                break;
-            case 'Num0':
-                calculator.input(0)
-                break;
-            case 'Decimal':
-                calculator.input('.')
-                break;
-            case 'Clear':
-                calculator.clear()
-                break;
-            case 'Percent':
-                calculator.setOperator('%')
-                break;
-            case 'Sign':
-                calculator.setOperator('sign')
-                break;
-            case 'Divide':
-                calculator.setOperator('/')
-                break;
-            case 'Multiply':
-                calculator.setOperator('*')
-                break;
-            case 'Add':
-                calculator.setOperator('+')
-                break;
-            case 'Subtract':
-                calculator.setOperator('-')
-                break;
-            case 'Equals':
-                calculator.calculate()
-                break;
-            default:
-                console.log(`unknown button: ${numberButton.id}`)
-                break;
-        }
+function clear() {
+    Display.textContent = ""
+    inputValue = 0.0
+    lastValue = 0.0
+    operation = ""
+    solution = null
+}
+
+function display(input) {
+    Display.textContent = input
+}
+
+function attachNums() {
+    const numberButtons = document.querySelectorAll('.calculator .Number')
+    numberButtons.forEach(numberButton => numberButton.addEventListener('click', function(){
+        input(numberButton.value)
     }))
 }
 
-const calculator = new Calculator();
-attachButtons()
+function attachOperators() {
+    const operators = document.querySelectorAll('.calculator .Operator')
+    operators.forEach(operator => operator.addEventListener('click', function(){
+        setOperator(operator)
+    }))
+}
+
+function attachFunctions() {
+    const functions = document.querySelectorAll('.calculator .function')
+    functions.forEach(functions => functions.addEventListener('click', function(){
+        doFunctions(functions)
+    }))
+}
+
+attachFunctions()
+attachNums()
+attachOperators()
